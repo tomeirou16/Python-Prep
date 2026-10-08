@@ -1,0 +1,2165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https://jmckmeelrmttuzxfnvxw.supabase.co https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline';">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Control de Pañol · SGS</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --orange:    #E8611A;
+  --orangedk:  #C24E0E;
+  --orangelt:  rgba(232,97,26,0.12);
+  --green:     #30D158;
+  --red:       #FF3B30;
+  --blue:      #007AFF;
+  --yellow:    #FF9F0A;
+  --bg:        #F2F2F7;
+  --card:      rgba(255,255,255,0.92);
+  --cardsolid: #FFFFFF;
+  --label:     #1C1C1E;
+  --label2:    #3A3A3C;
+  --label3:    #636366;
+  --label4:    #AEAEB2;
+  --sep:       rgba(60,60,67,0.12);
+  --sep2:      rgba(60,60,67,0.06);
+  --fill:      rgba(120,120,128,0.12);
+  --fill2:     rgba(120,120,128,0.08);
+  --sans:      'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --radius:    16px;
+  --radius-sm: 10px;
+  --shadow:    0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.06);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  background: var(--bg);
+  color: var(--label);
+  font-family: var(--sans);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* HEADER */
+header {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--sep);
+  padding: 0 20px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.header-badge {
+  background: var(--orange);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+.header-info { }
+.header-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--label);
+  line-height: 1.2;
+  letter-spacing: -0.2px;
+}
+.header-sub {
+  font-size: 10px;
+  color: var(--label4);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.clock {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--label3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* MAIN */
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 20px 16px 40px;
+}
+
+/* SCREENS */
+.screen { display: none; width: 100%; max-width: 420px; }
+.screen.active { display: block; }
+
+/* ANIMATIONS */
+@keyframes slideUp {
+  from { opacity:0; transform: translateY(20px) scale(0.98); }
+  to   { opacity:1; transform: translateY(0) scale(1); }
+}
+@keyframes fadeIn {
+  from { opacity:0; }
+  to   { opacity:1; }
+}
+@keyframes pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%     { transform: translateX(-8px); }
+  40%     { transform: translateX(8px); }
+  60%     { transform: translateX(-5px); }
+  80%     { transform: translateX(5px); }
+}
+@keyframes checkmark {
+  0%   { transform: scale(0) rotate(-20deg); opacity:0; }
+  60%  { transform: scale(1.1) rotate(5deg); }
+  100% { transform: scale(1) rotate(0); opacity:1; }
+}
+.screen.active > * { animation: slideUp 0.35s cubic-bezier(0.34,1.26,0.64,1) both; }
+.screen.active > *:nth-child(2) { animation-delay: 0.05s; }
+.screen.active > *:nth-child(3) { animation-delay: 0.1s; }
+
+/* CARDS */
+.card {
+  background: var(--card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.card-header {
+  padding: 20px 20px 0;
+}
+.card-body { padding: 16px 20px 20px; }
+.card-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--label);
+  margin-bottom: 2px;
+}
+.card-sub {
+  font-size: 12px;
+  color: var(--label4);
+  letter-spacing: 0.2px;
+  margin-bottom: 16px;
+}
+.section-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--label3);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 0 20px;
+  margin: 16px 0 6px;
+}
+
+/* GROUPED LIST (iOS style) */
+.list-group {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.list-item {
+  display: flex;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--sep2);
+  cursor: pointer;
+  transition: background 0.12s;
+  gap: 12px;
+}
+.list-item:last-child { border-bottom: none; }
+.list-item:active, .list-item.pressing { background: var(--fill); }
+.list-item-icon {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+.list-item-content { flex: 1; min-width: 0; }
+.list-item-title { font-size: 15px; font-weight: 600; color: var(--label); }
+.list-item-sub { font-size: 12px; color: var(--label3); margin-top: 1px; }
+.list-item-right { display: flex; align-items: center; gap: 6px; }
+.list-item-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+.badge-in  { background: rgba(48,209,88,0.15); color: var(--green); }
+.badge-out { background: rgba(255,59,48,0.15); color: var(--red); }
+.badge-warn { background: rgba(255,159,10,0.15); color: var(--yellow); }
+.chevron { color: var(--label4); font-size: 13px; }
+
+/* BUTTONS */
+.btn-row { display: flex; gap: 10px; margin-bottom: 10px; }
+
+.ios-btn {
+  flex: 1;
+  padding: 15px 12px;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.12s, opacity 0.12s;
+  letter-spacing: -0.2px;
+}
+.ios-btn:active { transform: scale(0.96); opacity: 0.85; }
+.ios-btn.primary { background: var(--orange); color: #fff; }
+.ios-btn.secondary { background: var(--fill); color: var(--label); }
+.ios-btn.green-btn { background: rgba(48,209,88,0.15); color: var(--green); }
+.ios-btn.red-btn { background: rgba(255,59,48,0.12); color: var(--red); }
+.ios-btn.blue-btn { background: rgba(0,122,255,0.12); color: var(--blue); }
+.ios-btn.full { width: 100%; display: block; flex: none; margin-bottom: 10px; }
+.ios-btn:disabled { opacity: 0.3; pointer-events: none; }
+
+/* BACK BUTTON */
+.back-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  color: var(--orange);
+  font-size: 15px;
+  font-weight: 500;
+  width: fit-content;
+}
+.back-row:active { opacity: 0.6; }
+
+/* STEP DOTS */
+.steps {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.step-dot {
+  height: 4px;
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.34,1.26,0.64,1);
+}
+.step-dot.inactive { width: 16px; background: var(--fill); }
+.step-dot.done     { width: 16px; background: var(--orange); opacity: 0.5; }
+.step-dot.active   { width: 28px; background: var(--orange); }
+
+/* PIN */
+.pin-dots {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin: 24px 0;
+}
+.pin-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--fill);
+  border: 1.5px solid var(--sep);
+  transition: all 0.15s cubic-bezier(0.34,1.26,0.64,1);
+}
+.pin-dot.filled {
+  background: var(--orange);
+  border-color: var(--orange);
+  transform: scale(1.1);
+}
+.pin-dot.error {
+  background: var(--red);
+  border-color: var(--red);
+}
+
+.pin-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 0 auto;
+  max-width: 280px;
+}
+.pin-key {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: none;
+  background: var(--cardsolid);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  font-family: var(--sans);
+  font-size: 24px;
+  font-weight: 300;
+  color: var(--label);
+  cursor: pointer;
+  transition: transform 0.08s, background 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pin-key:active { transform: scale(0.9); background: var(--fill); }
+.pin-key.action { font-size: 15px; font-weight: 500; color: var(--label); background: transparent; box-shadow: none; }
+.pin-key.action:active { background: var(--fill); }
+
+/* USER SELECTOR */
+.user-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.user-btn {
+  padding: 16px 10px;
+  border-radius: var(--radius-sm);
+  border: 2px solid transparent;
+  background: var(--fill2);
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--label);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+}
+.user-btn:active { transform: scale(0.96); }
+.user-btn.selected {
+  background: var(--orangelt);
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+/* SECTOR */
+.sector-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+.sector-btn {
+  padding: 16px 8px;
+  border-radius: var(--radius-sm);
+  border: 2px solid transparent;
+  background: var(--fill2);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--label2);
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.34,1.26,0.64,1);
+  text-align: center;
+  line-height: 1.3;
+}
+.sector-btn:active { transform: scale(0.94); }
+.sector-btn.selected {
+  background: var(--orangelt);
+  border-color: var(--orange);
+  color: var(--orange);
+  transform: scale(1.02);
+}
+.sector-btn .sector-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+
+/* INPUT */
+.ios-input {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--sep);
+  background: var(--fill2);
+  font-family: var(--sans);
+  font-size: 15px;
+  color: var(--label);
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  margin-bottom: 10px;
+}
+.ios-input:focus { border-color: var(--orange); background: #fff; }
+.ios-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--label3);
+  letter-spacing: 0.3px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* INFO ROWS */
+.info-list { margin-bottom: 14px; }
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--sep2);
+}
+.info-row:last-child { border-bottom: none; }
+.info-key { font-size: 13px; color: var(--label3); }
+.info-val { font-size: 13px; font-weight: 600; color: var(--label); }
+.info-val.green { color: var(--green); }
+.info-val.red   { color: var(--red); }
+.info-val.orange { color: var(--orange); }
+
+/* TIEMPO */
+.tiempo-mode-toggle {
+  display: flex;
+  background: var(--fill);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  margin-bottom: 16px;
+}
+.tiempo-toggle-btn {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--label3);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tiempo-toggle-btn.active {
+  background: #fff;
+  color: var(--label);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 7px;
+}
+.days-btn {
+  padding: 12px 4px;
+  border-radius: var(--radius-sm);
+  border: 2px solid transparent;
+  background: var(--fill2);
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--label2);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+.days-btn:active { transform: scale(0.94); }
+.days-btn.selected {
+  background: var(--orangelt);
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+/* ALERTS / NOTICE */
+.notice {
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.4;
+}
+.notice .notice-icon { font-size: 16px; flex-shrink: 0; margin-top: 0px; }
+.notice.orange { background: rgba(232,97,26,0.1); color: var(--orangedk); }
+.notice.red    { background: rgba(255,59,48,0.1); color: var(--red); }
+.notice.green  { background: rgba(48,209,88,0.1); color: #1a8a3c; }
+.notice.yellow { background: rgba(255,159,10,0.1); color: #a05c00; }
+.notice.blue   { background: rgba(0,122,255,0.1); color: var(--blue); }
+
+/* CONFIRM */
+.confirm-circle {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px;
+  margin: 0 auto 16px;
+  animation: checkmark 0.5s cubic-bezier(0.34,1.26,0.64,1);
+}
+
+/* DASHBOARD STATS */
+.stat-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.stat-card {
+  flex: 1;
+  background: var(--fill2);
+  border-radius: var(--radius-sm);
+  padding: 14px 10px;
+  text-align: center;
+}
+.stat-num {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.stat-lbl {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--label4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+}
+
+/* TEXTAREA */
+.ios-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--sep);
+  background: var(--fill2);
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--label);
+  outline: none;
+  resize: vertical;
+  min-height: 80px;
+  margin-bottom: 10px;
+  transition: border-color 0.2s;
+}
+.ios-textarea:focus { border-color: var(--red); background: #fff; }
+
+/* SWITCH */
+.switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+}
+</style>
+</head>
+<body>
+
+<div id="loading-overlay" style="display:flex;position:fixed;inset:0;z-index:999;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;flex-direction:column;gap:14px;">
+  <div style="width:44px;height:44px;border:3px solid var(--border);border-top-color:var(--orange);border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+  <div style="font-size:14px;font-weight:600;color:var(--label3);">Cargando datos...</div>
+</div>
+<div id="offline-banner" style="display:none;background:var(--yellow);color:#000;padding:8px 16px;font-size:12px;font-weight:600;text-align:center;">Sin conexión — mostrando datos locales</div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+<header>
+  <div class="header-logo">
+    <div class="header-badge">SGS</div>
+    <div class="header-info">
+      <div class="header-title">Control de Pañol</div>
+      <div class="header-sub">PART-145 · END Aviación</div>
+    </div>
+  </div>
+  <div class="clock" id="clock">--:--</div>
+</header>
+
+<main>
+
+<!-- ═══════════════════════════════════ DASHBOARD ═══ -->
+<div class="screen active" id="s-dashboard">
+  <div class="card">
+    <div class="card-body">
+      <div class="stat-row">
+        <div class="stat-card">
+          <div class="stat-num" id="d-in" style="color:var(--green)">0</div>
+          <div class="stat-lbl">En pañol</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="d-out" style="color:var(--orange)">0</div>
+          <div class="stat-lbl">Fuera</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="d-exp" style="color:var(--red)">0</div>
+          <div class="stat-lbl">Vencidas</div>
+        </div>
+      </div>
+      <div id="expired-section"></div>
+      <div id="cal-warnings"></div>
+      <button class="ios-btn primary full" onclick="goTo('s-login')">Registrar movimiento</button>
+      <div class="btn-row">
+        <button class="ios-btn secondary" onclick="goTo('s-missing')">⚠ Faltante</button>
+        <button class="ios-btn secondary" onclick="goTo('s-calibration')">📅 Calibraciones</button>
+        <button class="ios-btn secondary" onclick="goTo('s-history')">Historial</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Últimos movimientos</div>
+  <div class="list-group" id="recent-log">
+    <div class="list-item" style="cursor:default;color:var(--label4);font-size:14px;justify-content:center;">Sin movimientos aún</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ LOGIN ═══ -->
+<div class="screen" id="s-login">
+  <div class="card">
+    <div class="card-body">
+      <div class="back-row" onclick="goTo('s-dashboard')">‹ Volver</div>
+      <div class="card-title">Identificación</div>
+      <div class="card-sub">Seleccioná tu nombre</div>
+      <div class="user-grid" id="user-grid">
+        <button class="user-btn" onclick="selectUser('Miguel',this)">Miguel</button>
+        <button class="user-btn" onclick="selectUser('Lautaro',this)">Lautaro</button>
+        <button class="user-btn" onclick="selectUser('Fran',this)">Fran</button>
+        <button class="user-btn" onclick="selectUser('Otro',this)">Otro</button>
+      </div>
+      <div id="otro-box" style="display:none;">
+        <!-- Step 1: Request access -->
+        <div id="otro-step-request">
+          <div class="notice orange" style="margin-bottom:14px;">
+            <span class="notice-icon">🔐</span>
+            <div><strong>Acceso restringido</strong><br>Para operar el pañol necesitás que un técnico del equipo te autorice con un código.</div>
+          </div>
+          <label class="ios-label">Tu nombre completo</label>
+          <input class="ios-input" id="otro-name" placeholder="Nombre y apellido..." />
+          <label class="ios-label">Notificar a</label>
+          <div class="user-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:12px;" id="otro-notify-grid">
+            <button class="user-btn" onclick="selectOtroNotify('Miguel',this)">Miguel</button>
+            <button class="user-btn" onclick="selectOtroNotify('Lautaro',this)">Lautaro</button>
+            <button class="user-btn" onclick="selectOtroNotify('Fran',this)">Fran</button>
+          </div>
+          <label class="ios-label">Enviar por</label>
+          <div class="btn-row" style="margin-bottom:12px;">
+            <button class="ios-btn secondary" id="otro-via-email" onclick="selectOtroVia('email',this)" style="font-size:13px;">📧 Email</button>
+            <button class="ios-btn secondary" id="otro-via-sms"   onclick="selectOtroVia('sms',this)"   style="font-size:13px;">💬 SMS</button>
+          </div>
+          <div id="otro-request-error" style="margin-bottom:8px;"></div>
+          <button class="ios-btn primary full" onclick="sendOtroRequest()">Enviar solicitud</button>
+        </div>
+        <!-- Step 2: Enter code received -->
+        <div id="otro-step-code" style="display:none;">
+          <div class="notice green" style="margin-bottom:14px;">
+            <span class="notice-icon">✓</span>
+            <div id="otro-sent-msg"></div>
+          </div>
+          <label class="ios-label">Ingresá el código que recibiste</label>
+          <div style="display:flex;gap:8px;margin-bottom:8px;">
+            <input class="ios-input" id="otro-code-input" placeholder="Ej: A3X9" style="margin:0;flex:1;text-transform:uppercase;font-size:20px;letter-spacing:4px;text-align:center;" maxlength="4" oninput="this.value=this.value.toUpperCase()" />
+            <button class="ios-btn primary" style="flex:none;padding:13px 16px;font-size:13px;" onclick="verifyOtroCode()">OK</button>
+          </div>
+          <div id="otro-code-error" style="margin-bottom:8px;"></div>
+          <button class="ios-btn secondary full" style="font-size:13px;" onclick="resetOtroStep()">← Volver a solicitar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="pin-card">
+    <div class="card-body">
+      <div style="text-align:center;font-size:13px;font-weight:600;color:var(--label3);margin-bottom:4px;">PIN</div>
+      <div class="pin-dots" id="pin-dots">
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin-pad">
+        <button class="pin-key" onclick="pinPress('1')">1</button>
+        <button class="pin-key" onclick="pinPress('2')">2</button>
+        <button class="pin-key" onclick="pinPress('3')">3</button>
+        <button class="pin-key" onclick="pinPress('4')">4</button>
+        <button class="pin-key" onclick="pinPress('5')">5</button>
+        <button class="pin-key" onclick="pinPress('6')">6</button>
+        <button class="pin-key" onclick="pinPress('7')">7</button>
+        <button class="pin-key" onclick="pinPress('8')">8</button>
+        <button class="pin-key" onclick="pinPress('9')">9</button>
+        <button class="pin-key action" onclick="pinClear()">Borrar</button>
+        <button class="pin-key" onclick="pinPress('0')">0</button>
+        <button class="pin-key action" id="pin-confirm-btn" onclick="pinConfirm()" style="color:var(--orange);">OK</button>
+      </div>
+      <div id="login-error" style="margin-top:12px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ SECTOR ═══ -->
+<div class="screen" id="s-sector">
+  <div class="card">
+    <div class="card-body">
+      <div class="back-row" onclick="goTo('s-login')">‹ Volver</div>
+      <div class="steps" id="steps-sector"></div>
+      <div class="card-title">Sector de trabajo</div>
+      <div class="card-sub" id="welcome-msg"></div>
+      <div class="sector-grid" style="grid-template-columns:1fr 1fr 1fr;">
+        <button class="sector-btn" onclick="selectSector('Ultrasonidos',this)">
+          <span class="sector-icon">🔊</span>Ultrasonidos
+        </button>
+        <button class="sector-btn" onclick="selectSector('Corrientes',this)">
+          <span class="sector-icon">⚡</span>Corrientes
+        </button>
+        <button class="sector-btn" onclick="selectSector('Partículas M.',this)">
+          <span class="sector-icon">🧲</span>Partículas M.
+        </button>
+        <button class="sector-btn" onclick="selectSector('Líquidos Penetrantes',this)">
+          <span class="sector-icon">💧</span>Líq. Penetrantes
+        </button>
+        <button class="sector-btn" onclick="selectSector('Óptica',this)">
+          <span class="sector-icon">🔭</span>Óptica
+        </button>
+        <button class="sector-btn" onclick="selectSector('Radiografía',this)">
+          <span class="sector-icon">☢️</span>Radiografía
+        </button>
+        <button class="sector-btn" onclick="selectSector('Piezas Patrón',this)">
+          <span class="sector-icon">📦</span>Piezas Patrón
+        </button>
+        <button class="sector-btn" onclick="selectSector('Temperatura y Humedad',this)">
+          <span class="sector-icon">🌡️</span>Temp. y Humedad
+        </button>
+        <button class="sector-btn" onclick="selectSector('Acústica',this)">
+          <span class="sector-icon">🔔</span>Acústica
+        </button>
+        <button class="sector-btn" onclick="selectSector('Dimensional',this)">
+          <span class="sector-icon">📐</span>Dimensional
+        </button>
+        <button class="sector-btn" onclick="selectSector('Herramientas',this)">
+          <span class="sector-icon">🔧</span>Herramientas
+        </button>
+        <button class="sector-btn" onclick="selectSector('Otro',this)">
+          <span class="sector-icon">🗂️</span>Otro
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ TOOLS ═══ -->
+<div class="screen" id="s-tools">
+  <div class="card">
+    <div class="card-body">
+      <div class="back-row" onclick="goTo('s-sector')">‹ Volver</div>
+      <div class="steps" id="steps-tools"></div>
+      <div class="card-title">Herramienta</div>
+      <div class="card-sub" id="sector-label"></div>
+      <label class="ios-label">Código manual</label>
+      <div style="display:flex;gap:8px;margin-bottom:4px;">
+        <input class="ios-input" id="manual-code" placeholder="Ej: US-001" style="margin:0;flex:1;text-transform:uppercase;" />
+        <button class="ios-btn primary" style="flex:none;padding:13px 16px;font-size:13px;" onclick="manualSearch()">Buscar</button>
+      </div>
+      <div id="tool-error" style="margin-bottom:8px;"></div>
+    </div>
+  </div>
+
+  <div class="section-label" id="tools-section-label">Herramientas del sector</div>
+  <div class="list-group" id="tool-list"></div>
+</div>
+
+<!-- ═══════════════════════════════════ MOVE TYPE ═══ -->
+<div class="screen" id="s-movetype">
+  <div class="card">
+    <div class="card-body">
+      <div class="back-row" onclick="goTo('s-tools')">‹ Volver</div>
+      <div class="steps" id="steps-move"></div>
+      <div class="card-title" id="move-tool-name">Herramienta</div>
+      <div class="card-sub" id="move-tool-code"></div>
+      <div class="info-list" id="move-info"></div>
+      <div class="btn-row">
+        <button class="ios-btn red-btn" id="btn-salida" onclick="selectMove('SALIDA')" style="font-size:16px;">↑ Sale</button>
+        <button class="ios-btn green-btn" id="btn-entrada" onclick="selectMove('ENTRADA')" style="font-size:16px;">↓ Entra</button>
+      </div>
+      <div id="move-error"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ TIEMPO ═══ -->
+<div class="screen" id="s-tiempo">
+  <div class="card">
+    <div class="card-body">
+      <div class="steps" id="steps-tiempo"></div>
+      <div class="card-title">Tiempo de préstamo</div>
+      <div class="card-sub">¿Cuánto tiempo llevás la herramienta?</div>
+      <div id="tiempo-cal-warn"></div>
+
+      <div class="tiempo-mode-toggle">
+        <button class="tiempo-toggle-btn active" id="toggle-days" onclick="switchTiempoMode('days')">Por días</button>
+        <button class="tiempo-toggle-btn" id="toggle-date" onclick="switchTiempoMode('date')">Fecha exacta</button>
+      </div>
+
+      <div id="panel-days">
+        <div class="days-grid">
+          <button class="days-btn" onclick="selectDays(1,this)">1 día</button>
+          <button class="days-btn" onclick="selectDays(2,this)">2 días</button>
+          <button class="days-btn" onclick="selectDays(3,this)">3 días</button>
+          <button class="days-btn" onclick="selectDays(5,this)">5 días</button>
+          <button class="days-btn" onclick="selectDays(7,this)">1 semana</button>
+          <button class="days-btn" onclick="selectDays(14,this)">2 semanas</button>
+          <button class="days-btn" onclick="selectDays(30,this)">1 mes</button>
+          <button class="days-btn" onclick="selectDays(0,this)">Indefinido</button>
+        </div>
+      </div>
+
+      <div id="panel-date" style="display:none;">
+        <label class="ios-label">Fecha de devolución</label>
+        <input type="date" class="ios-input" id="date-input" oninput="onDateInput()" style="margin:0;" />
+      </div>
+
+      <div id="tiempo-preview" style="margin-top:14px;"></div>
+      <button class="ios-btn primary full" style="margin-top:14px;" onclick="confirmTiempo()">Confirmar salida</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ ESTADO ═══ -->
+<div class="screen" id="s-estado">
+  <div class="card">
+    <div class="card-body">
+      <div class="steps" id="steps-estado"></div>
+      <div class="card-title">Estado al devolver</div>
+      <div class="card-sub" id="estado-tool-name"></div>
+
+      <div class="btn-row" style="margin-bottom:16px;">
+        <button class="ios-btn green-btn" id="btn-ok" onclick="selectEstado('OK',this)" style="font-size:16px;flex:1.2;">✓ OK</button>
+        <button class="ios-btn red-btn" id="btn-informe" onclick="selectEstado('INFORME',this)" style="font-size:15px;">⚠ Informe</button>
+      </div>
+
+      <div id="informe-box" style="display:none;">
+        <div class="notice yellow"><span class="notice-icon">⚠</span>Describí brevemente el problema:</div>
+        <textarea class="ios-textarea" id="informe-text" placeholder="Ej: Cable dañado, cristal roto..."></textarea>
+      </div>
+
+      <button class="ios-btn primary full" id="btn-confirmar-estado" onclick="confirmarEstado()" style="display:none;">Registrar devolución</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ FALTANTE ═══ -->
+<div class="screen" id="s-missing">
+  <div class="card">
+    <div class="card-body">
+      <div class="back-row" onclick="goTo('s-dashboard')">‹ Volver</div>
+      <div class="card-title">Herramienta faltante</div>
+      <div class="card-sub">El sistema indica que está en pañol, pero no la encontrás</div>
+
+      <div class="notice orange"><span class="notice-icon">⚠</span>Se enviará una alerta a todo el equipo con tu nombre y la herramienta que buscás.</div>
+
+      <label class="ios-label">¿Quién reporta?</label>
+      <div class="user-grid" style="margin-bottom:14px;" id="missing-user-grid">
+        <button class="user-btn" onclick="selectMissingUser('Miguel',this)">Miguel</button>
+        <button class="user-btn" onclick="selectMissingUser('Lautaro',this)">Lautaro</button>
+        <button class="user-btn" onclick="selectMissingUser('Fran',this)">Fran</button>
+        <button class="user-btn" onclick="selectMissingUser('Otro',this)">Otro</button>
+      </div>
+      <div id="missing-otro-box" style="display:none;margin-bottom:10px;">
+        <input class="ios-input" id="missing-otro-name" placeholder="Tu nombre..." style="margin:0;" />
+      </div>
+
+      <label class="ios-label">Herramienta que necesitás</label>
+      <div id="missing-tool-display" onclick="openMissingCatalog()"
+        style="display:flex;align-items:center;justify-content:space-between;padding:13px 14px;border-radius:10px;border:1.5px solid var(--sep);background:var(--fill2);cursor:pointer;margin-bottom:10px;">
+        <span id="missing-tool-label" style="font-size:15px;color:var(--label4);">Tocar para elegir del catálogo...</span>
+        <span style="color:var(--orange);font-size:13px;font-weight:600;">Ver catálogo ›</span>
+      </div>
+      <input type="hidden" id="missing-tool" />
+
+      <label class="ios-label">Detalle (opcional)</label>
+      <textarea class="ios-textarea" id="missing-detail" placeholder="Cualquier información adicional..."></textarea>
+
+      <div id="missing-error" style="margin-bottom:8px;"></div>
+      <button class="ios-btn primary full" onclick="sendMissingAlert()">Enviar alerta al equipo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ CALIBRATION ═══ -->
+<div class="screen" id="s-calibration">
+  <div class="card">
+    <div class="card-body">
+      <div class="back-row" onclick="goTo('s-dashboard')">‹ Volver</div>
+      <div class="card-title">Calibraciones</div>
+      <div class="card-sub">Tocá una herramienta para actualizar su calibración</div>
+      <div class="btn-row" style="margin-bottom:0;">
+        <button class="ios-btn secondary" id="cal-filter-all"  onclick="filterCal('all')"  style="font-size:12px;padding:10px 6px;">Todas</button>
+        <button class="ios-btn red-btn"   id="cal-filter-exp"  onclick="filterCal('exp')"  style="font-size:12px;padding:10px 6px;">Vencidas</button>
+        <button class="ios-btn"           id="cal-filter-soon" onclick="filterCal('soon')" style="font-size:12px;padding:10px 6px;background:rgba(255,159,10,0.12);color:var(--yellow);">Próximas</button>
+        <button class="ios-btn green-btn" id="cal-filter-ok"   onclick="filterCal('ok')"   style="font-size:12px;padding:10px 6px;">Al día</button>
+      </div>
+    </div>
+  </div>
+  <div id="cal-list"></div>
+</div>
+
+<!-- ═══ CAL UPDATE MODAL ═══ -->
+<div id="cal-modal" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);" onclick="closeCalModalIfOutside(event)">
+  <div style="position:absolute;bottom:0;left:0;right:0;background:var(--bg);border-radius:20px 20px 0 0;padding:0 0 32px;animation:slideModal 0.3s cubic-bezier(0.34,1.1,0.64,1);">
+    <!-- Handle -->
+    <div style="display:flex;justify-content:center;padding:12px 0 4px;">
+      <div style="width:36px;height:4px;border-radius:2px;background:var(--sep);"></div>
+    </div>
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 20px 16px;">
+      <div style="font-size:18px;font-weight:700;color:var(--label);">Actualizar calibración</div>
+      <button onclick="closeCalModal()" style="background:var(--fill);border:none;border-radius:50%;width:30px;height:30px;font-size:16px;cursor:pointer;color:var(--label3);">✕</button>
+    </div>
+    <!-- Tool info -->
+    <div id="cal-modal-tool-info" style="margin:0 16px 16px;padding:14px;background:var(--fill2);border-radius:var(--radius-sm);"></div>
+    <!-- New date -->
+    <div style="padding:0 16px;">
+      <label class="ios-label">Nueva fecha de vencimiento</label>
+      <input type="date" class="ios-input" id="cal-new-date" style="margin-bottom:16px;" />
+      <!-- Auth section -->
+      <div style="background:rgba(232,97,26,0.08);border:1.5px solid rgba(232,97,26,0.25);border-radius:var(--radius-sm);padding:14px;margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;">🔐 Requiere autorización</div>
+        <label class="ios-label">¿Quién autoriza el cambio?</label>
+        <div class="user-grid" style="margin-bottom:10px;" id="cal-auth-user-grid">
+          <button class="user-btn" onclick="selectCalAuth('Miguel',this)">Miguel</button>
+          <button class="user-btn" onclick="selectCalAuth('Lautaro',this)">Lautaro</button>
+          <button class="user-btn" onclick="selectCalAuth('Fran',this)">Fran</button>
+        </div>
+        <label class="ios-label">PIN de autorización</label>
+        <div class="pin-dots" id="cal-pin-dots" style="justify-content:flex-start;gap:12px;margin:10px 0 12px;">
+          <div class="pin-dot"></div>
+          <div class="pin-dot"></div>
+          <div class="pin-dot"></div>
+          <div class="pin-dot"></div>
+        </div>
+        <div class="pin-pad" style="max-width:240px;">
+          <button class="pin-key" onclick="calPinPress('1')" style="width:100%;aspect-ratio:auto;padding:12px;border-radius:8px;">1</button>
+          <button class="pin-key" onclick="calPinPress('2')" style="width:100%;aspect-ratio:auto;padding:12px;border-radius:8px;">2</button>
+          <button class="pin-key" onclick="calPinPress('3')" style="width:100%;aspect-ratio:auto;padding:12px;border-radius:8px;">3</button>
+          <button class="pin-key" onclick="calPinPress('4')" style="width:100%;aspect-ratio:auto;padding:12px;border-radius:8px;">4</button>
+          <button class="pin-key" onclick="calPinPress('5')" style="width:100%;aspect-ratio:auto;padding:12px;border-radius:8px;">5</button>
+          <button class="pin-key" onclick="calPinPress('6')" style="width:100%;aspect-ratio:auto;padding:12px;border-radius:8px;">6</button>
+          <button class="pin-key" onclick="calPinPress('7')" style="width:100%;aspect-ratio:auto;padding:12px;border-radius:8px;">7</button>
+          <button class="pin-key" onclick="calPinPress('8')" style="width:100%;aspect-ratio:auto;padding:12px;border-radius:8px;">8</button>
+          <button class="pin-key" onclick="calPinPress('9')" style="width:100%;aspect-ratio:auto;padding:12px;border-radius:8px;">9</button>
+          <button class="pin-key action" onclick="calPinClear()" style="width:100%;aspect-ratio:auto;padding:12px;border-radius:8px;font-size:13px;">Borrar</button>
+          <button class="pin-key" onclick="calPinPress('0')" style="width:100%;aspect-ratio:auto;padding:12px;border-radius:8px;">0</button>
+          <button class="pin-key action" onclick="calPinConfirm()" style="width:100%;aspect-ratio:auto;padding:12px;border-radius:8px;font-size:13px;color:var(--orange);">OK</button>
+        </div>
+        <div id="cal-auth-error" style="margin-top:10px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ CONFIRM ═══ -->
+<div class="screen" id="s-confirm">
+  <div class="card">
+    <div class="card-body" style="text-align:center;padding:32px 20px;">
+      <div class="confirm-circle" id="confirm-circle"></div>
+      <div class="card-title" id="confirm-title" style="text-align:center;margin-bottom:8px;"></div>
+      <div id="confirm-detail" style="font-size:14px;color:var(--label3);line-height:1.7;margin-bottom:20px;"></div>
+      <div id="confirm-notice" style="text-align:left;margin-bottom:14px;"></div>
+      <button class="ios-btn primary full" onclick="goTo('s-dashboard')">Volver al panel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ HISTORY ═══ -->
+<div class="screen" id="s-history">
+  <div class="card">
+    <div class="card-body">
+      <div class="back-row" onclick="goTo('s-dashboard')">‹ Volver</div>
+      <div class="card-title">Historial</div>
+      <div class="card-sub">Todos los movimientos</div>
+    </div>
+  </div>
+  <div class="list-group" id="history-list">
+    <div class="list-item" style="cursor:default;color:var(--label4);font-size:14px;justify-content:center;">Sin registros aún</div>
+  </div>
+</div>
+
+</main>
+
+<!-- ═══ CATALOG MODAL ═══ -->
+<style>
+@keyframes slideModal {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+</style>
+<div id="catalog-modal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);" onclick="closeCatalogIfOutside(event)">
+  <div style="position:absolute;bottom:0;left:0;right:0;background:var(--bg);border-radius:20px 20px 0 0;max-height:85vh;display:flex;flex-direction:column;animation:slideModal 0.3s cubic-bezier(0.34,1.1,0.64,1);">
+    <div style="display:flex;justify-content:center;padding:12px 0 4px;">
+      <div style="width:36px;height:4px;border-radius:2px;background:var(--sep);"></div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 20px 12px;">
+      <div style="font-size:18px;font-weight:700;color:var(--label);">Elegí la herramienta</div>
+      <button onclick="closeCatalog()" style="background:var(--fill);border:none;border-radius:50%;width:30px;height:30px;font-size:16px;cursor:pointer;color:var(--label3);">✕</button>
+    </div>
+    <div style="padding:0 16px 10px;">
+      <input class="ios-input" id="catalog-search" placeholder="Buscar por nombre, código o sector..." oninput="filterCatalog()" style="margin:0;" />
+    </div>
+    <div id="catalog-list" style="overflow-y:auto;flex:1;padding:0 12px 32px;"></div>
+  </div>
+</div>
+
+<script>
+// ═══ DATA ═══
+
+// ═══ SUPABASE CLIENT (fetch directo) ═══
+const SUPA_URL = 'https://jmckmeelrmttuzxfnvxw.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImptY2ttZWVscm10dHV6eGZudnh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEzMDg2NTYsImV4cCI6MjEwNjg4NDY1Nn0.InWn2gez2UJuyYQ4ApiRv0LMkgQfY_gWxck84pyMGOU';
+
+const HEADERS = {
+  'apikey': SUPA_KEY,
+  'Authorization': 'Bearer ' + SUPA_KEY,
+  'Content-Type': 'application/json',
+};
+
+async function supa(table, opts = {}) {
+  const method = opts.method || 'GET';
+  const params = opts.params ? '?' + opts.params : '';
+  const url = `${SUPA_URL}/rest/v1/${table}${params}`;
+  const headers = { ...HEADERS };
+  if (opts.prefer) headers['Prefer'] = opts.prefer;
+
+  try {
+    const res = await fetch(url, {
+      method,
+      headers,
+      body: opts.body ? JSON.stringify(opts.body) : undefined,
+    });
+    if (!res.ok) {
+      const txt = await res.text();
+      console.error(`Supabase ${method} ${table}:`, res.status, txt);
+      return null;
+    }
+    const text = await res.text();
+    return text ? JSON.parse(text) : true;
+  } catch(e) {
+    console.error('Supabase fetch error:', e);
+    return null;
+  }
+}
+
+const db = {
+  getTools() {
+    return supa('herramientas', { params: 'activo=eq.true&order=sector,name&select=*' });
+  },
+  getTecnicos() {
+    return supa('tecnicos', { params: 'activo=eq.true&select=*' });
+  },
+  getMovimientos(limit = 50) {
+    return supa('movimientos', { params: `order=created_at.desc&limit=${limit}&select=*` });
+  },
+  logMovimiento(data) {
+    return supa('movimientos', { method: 'POST', body: data, prefer: 'return=minimal' });
+  },
+  updateToolState(code, patch) {
+    return supa('herramientas', {
+      method: 'PATCH',
+      params: 'code=eq.' + encodeURIComponent(code),
+      body: patch,
+      prefer: 'return=minimal'
+    });
+  },
+  async updateCalExp(code, calExp, autorizador) {
+    await supa('herramientas', {
+      method: 'PATCH',
+      params: 'code=eq.' + encodeURIComponent(code),
+      body: { cal_exp: calExp },
+      prefer: 'return=minimal'
+    });
+    return db.logMovimiento({
+      tipo: 'CALIBRACION',
+      user_nombre: autorizador,
+      herramienta_code: code,
+      notas: 'Calibración actualizada: nueva fecha ' + calExp
+    });
+  },
+};
+
+// ═══ INIT: cargar datos desde Supabase ═══
+
+async function initApp() {
+  showLoading(true);
+  try {
+    const [tools, tecs, movs] = await Promise.all([
+      db.getTools(),
+      db.getTecnicos(),
+      db.getMovimientos(50)
+    ]);
+
+    if (tools) {
+      TOOLS = tools.map(t => ({
+        code: t.code,
+        name: t.name,
+        serie: t.serie || '',
+        sector: t.sector,
+        icon: t.icon || '📦',
+        calibrable: t.calibrable,
+        calExp: t.cal_exp,
+        cedido: t.cedido,
+        estado: t.estado,
+      }));
+      // Init toolState from DB
+      toolState = {};
+      TOOLS.forEach(t => {
+        toolState[t.code] = { status:'IN', user:null, since:null, dueDate:null };
+      });
+    }
+
+    if (tecs) {
+      TECNICOS = {};
+      tecs.forEach(t => { TECNICOS[t.nombre] = t.pin; });
+    }
+
+    if (movs) {
+      // Reconstruct tool states from movement history
+      movs.slice().reverse().forEach(m => {
+        if (!m.herramienta_code || !toolState[m.herramienta_code]) return;
+        if (m.tipo === 'SALIDA') {
+          toolState[m.herramienta_code] = {
+            status:'OUT', user:m.user_nombre,
+            since: new Date(m.created_at).toLocaleString('es-AR'),
+            dueDate: m.due_date || null
+          };
+        } else if (m.tipo === 'ENTRADA') {
+          toolState[m.herramienta_code] = { status:'IN', user:null, since:null, dueDate:null };
+        }
+      });
+      // Load log
+      log = movs.map(m => ({
+        type: m.tipo,
+        user: m.user_nombre,
+        toolName: m.herramienta_name || m.herramienta_code || '',
+        toolCode: m.herramienta_code || '',
+        subject: m.herramienta_name || '',
+        time: new Date(m.created_at).toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'}),
+        date: new Date(m.created_at).toLocaleDateString('es-AR'),
+        notes: m.notas || null,
+        dueDate: m.due_date || null,
+      }));
+    }
+
+  } catch(err) {
+    console.error('Init error:', err);
+    showOfflineBanner();
+  }
+  showLoading(false);
+  updateDashboard();
+  updateCalWarnings();
+}
+
+function showLoading(on) {
+  let el = document.getElementById('loading-overlay');
+  if (!el) return;
+  el.style.display = on ? 'flex' : 'none';
+}
+
+function showOfflineBanner() {
+  const el = document.getElementById('offline-banner');
+  if (el) el.style.display = 'block';
+}
+
+// Override PINS lookup to use dynamic TECNICOS
+function getPIN(nombre) { return TECNICOS[nombre] || null; }
+
+const PINS = { 'Miguel':'1111', 'Lautaro':'2222', 'Fran':'3333' };
+
+let TOOLS = [];
+let TOOLS_ARCHIVO = [];
+
+let toolState = {};
+TOOLS.forEach(t => { toolState[t.code] = { status:'IN', user:null, since:null, dueDate:null }; });
+
+let log = [];
+
+// Declare all mutable state BEFORE any function that references them
+let pinBuffer = '';
+let tiempoMode = 'days';
+let selectedDaysVal = null;
+let missingUser = null;
+let S = {};
+
+function resetSession() {
+  S = { user:null, sector:null, tool:null, moveType:null, dueDate:null, estado:null, informeText:null, returnOnly:false };
+  pinBuffer = '';
+  tiempoMode = 'days';
+  selectedDaysVal = null;
+}
+resetSession();
+
+// ═══ CLOCK ═══
+setInterval(() => {
+  document.getElementById('clock').textContent =
+    new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+}, 1000);
+document.getElementById('clock').textContent =
+  new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+
+// ═══ NAV ═══
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById(id);
+  target.classList.add('active');
+
+  if (id === 's-dashboard') { resetSession(); clearLoginUI(); updateDashboard(); }
+  if (id === 's-login')     { clearLoginUI(); }
+  if (id === 's-sector')    { clearSectorUI(); }
+  if (id === 's-history')   { renderHistory(); }
+  if (id === 's-missing')   { clearMissingUI(); }
+  if (id === 's-calibration') { renderCalibration('all'); }
+
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function clearSectorUI() {
+  document.querySelectorAll('.sector-btn').forEach(b => b.classList.remove('selected'));
+}
+
+function clearLoginUI() {
+  pinBuffer = '';
+  updatePinDots();
+  document.querySelectorAll('.user-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('otro-box').style.display  = 'none';
+  document.getElementById('pin-card').style.display  = 'block';
+  document.getElementById('otro-name').value = '';
+  document.getElementById('login-error').innerHTML = '';
+  resetOtroStep();
+  S.user = null;
+}
+
+function clearMissingUI() {
+  missingUser = null;
+  document.querySelectorAll('#missing-user-grid .user-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('missing-otro-box').style.display = 'none';
+  document.getElementById('missing-otro-name').value = '';
+  document.getElementById('missing-tool').value = '';
+  document.getElementById('missing-detail').value = '';
+  document.getElementById('missing-error').innerHTML = '';
+}
+
+function stepDots(id, total, current) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = '';
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'step-dot ' + (i < current ? 'done' : i === current ? 'active' : 'inactive');
+    el.appendChild(d);
+  }
+}
+
+// ═══ DASHBOARD ═══
+function updateDashboard() {
+  const inC  = TOOLS.filter(t => toolState[t.code].status === 'IN').length;
+  const outC = TOOLS.filter(t => toolState[t.code].status === 'OUT').length;
+  const now  = new Date();
+  const expd = TOOLS.filter(t => {
+    const st = toolState[t.code];
+    return st.status === 'OUT' && st.dueDate && new Date(st.dueDate) < now;
+  });
+
+  document.getElementById('d-in').textContent  = inC;
+  document.getElementById('d-out').textContent = outC;
+  document.getElementById('d-exp').textContent = expd.length;
+
+  const expSec = document.getElementById('expired-section');
+  expSec.innerHTML = expd.length
+    ? `<div class="notice yellow" style="margin-bottom:12px;"><span class="notice-icon">⏰</span>${expd.length} herramienta(s) con plazo vencido — ${expd.map(t=>t.name).join(', ')}</div>`
+    : '';
+
+  const rl = document.getElementById('recent-log');
+  const recent = [...log].reverse().slice(0, 5);
+  rl.innerHTML = recent.length === 0
+    ? '<div class="list-item" style="cursor:default;color:var(--label4);font-size:14px;justify-content:center;">Sin movimientos aún</div>'
+    : recent.map(logItemHtml).join('');
+}
+
+function logItemHtml(l) {
+  const colors = _logColors;
+  const icons  = _logIcons;
+  const labels = _logLabels;
+  const cls    = _logCls;
+  const c = colors[l.type] || 'var(--label3)';
+  return `<div class="list-item" style="cursor:default;">
+    <div class="list-item-icon" style="background:${c}22;color:${c};">${icons[l.type]||'·'}</div>
+    <div class="list-item-content">
+      <div class="list-item-title">${l.toolName || l.subject}</div>
+      <div class="list-item-sub">${l.user} · ${l.time}${l.notes ? ' · ' + l.notes : ''}</div>
+    </div>
+    <span class="list-item-badge ${cls[l.type]||'badge-in'}">${labels[l.type]||l.type}</span>
+  </div>`;
+}
+
+// ═══ LOGIN ═══
+function selectUser(name, btn) {
+  S.user = name;
+  document.querySelectorAll('#user-grid .user-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const isOtro = name === 'Otro';
+  document.getElementById('otro-box').style.display  = isOtro ? 'block' : 'none';
+  document.getElementById('pin-card').style.display  = isOtro ? 'none'  : 'block';
+  pinBuffer = '';
+  updatePinDots();
+  document.getElementById('login-error').innerHTML = '';
+  if (isOtro) {
+    resetOtroStep();
+    if (isOtroCodeValid()) {
+      // Code still valid — full access
+      const exp = new Date(otroActiveCode.expiresAt);
+      const expStr = exp.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'}) +
+                     ' del ' + exp.toLocaleDateString('es-AR');
+      document.getElementById('otro-step-request').style.display = 'none';
+      document.getElementById('otro-step-code').style.display    = 'block';
+      document.getElementById('otro-sent-msg').innerHTML =
+        `Hola de nuevo, <strong>${otroActiveCode.name}</strong>.<br>
+         Tu código sigue activo hasta las <strong>${expStr}</strong>.<br>
+         Ingresalo para continuar operando.`;
+      document.getElementById('otro-code-input').value = '';
+      document.getElementById('otro-code-error').innerHTML = '';
+    } else if (hasOtroCode()) {
+      // Code expired but exists — can return, not withdraw
+      document.getElementById('otro-step-request').style.display = 'none';
+      document.getElementById('otro-step-code').style.display    = 'block';
+      document.getElementById('otro-sent-msg').innerHTML =
+        `Hola de nuevo, <strong>${otroActiveCode.name}</strong>.<br>
+         <span style="color:var(--yellow);">⏰ Tu código expiró, pero podés usarlo para <strong>devolver</strong> herramientas.<br>
+         Para retirar, solicitá un código nuevo.</span>`;
+      document.getElementById('otro-code-input').value = '';
+      document.getElementById('otro-code-error').innerHTML = '';
+      document.getElementById('otro-step-code').dataset.expiredMode = 'true';
+    } else {
+      document.getElementById('otro-request-error').innerHTML = '';
+    }
+  }
+}
+
+// ═══ EXTERNAL REQUEST ═══
+let otroNotify = null;
+let otroVia    = null;
+let otroPendingCode   = null;
+let otroPendingName   = null;
+let otroPendingExpiry = null;
+// Persists across sessions — expires after 24 hours
+let otroActiveCode = null;  // { code, name, expiresAt }
+
+function isOtroCodeValid() {
+  if (!otroActiveCode) return false;
+  return new Date() < new Date(otroActiveCode.expiresAt);
+}
+
+function hasOtroCode() {
+  // Has any code at all (expired or not) — valid for returns
+  return !!otroActiveCode;
+}
+const TEAM_CONTACTS = {
+  Miguel:  { email:'miguel@sgs.com',  sms:'+54911XXXXXXX' },
+  Lautaro: { email:'lautaro@sgs.com', sms:'+54911XXXXXXX' },
+  Fran:    { email:'fran@sgs.com',    sms:'+54911XXXXXXX' },
+};
+
+function selectOtroNotify(name, btn) {
+  otroNotify = name;
+  document.querySelectorAll('#otro-notify-grid .user-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('otro-request-error').innerHTML = '';
+}
+
+function selectOtroVia(via, btn) {
+  otroVia = via;
+  document.getElementById('otro-via-email').classList.toggle('selected', via === 'email');
+  document.getElementById('otro-via-sms').classList.toggle('selected', via === 'sms');
+  document.getElementById('otro-request-error').innerHTML = '';
+}
+
+function generateCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 4; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
+
+function sendOtroRequest() {
+  const name = document.getElementById('otro-name').value.trim();
+  if (!name)       { showOtroError('Ingresá tu nombre completo.'); return; }
+  if (!otroNotify) { showOtroError('Elegí a quién notificar.'); return; }
+  if (!otroVia)    { showOtroError('Elegí cómo enviar la solicitud.'); return; }
+
+  otroPendingCode = generateCode();
+  otroPendingName = name;
+  // Code expires in 24 hours from now
+  const expiresAt = new Date();
+  expiresAt.setHours(expiresAt.getHours() + 24);
+  otroPendingExpiry = expiresAt;
+
+  const contact = TEAM_CONTACTS[otroNotify];
+  const dest    = otroVia === 'email' ? contact.email : contact.sms;
+  const now     = new Date();
+  const time    = now.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+
+  // Log the request
+  log.push({
+    type:'SOLICITUD', user:name, toolName:'Acceso externo',
+    subject:'Acceso externo', time, date:now.toLocaleDateString('es-AR'),
+    notes:`Solicitud de acceso → ${otroNotify} vía ${otroVia.toUpperCase()}. Código: ${otroPendingCode}`
+  });
+
+  const expStr = expiresAt.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'}) +
+                 ' del ' + expiresAt.toLocaleDateString('es-AR');
+
+  // Show step 2
+  document.getElementById('otro-step-request').style.display = 'none';
+  document.getElementById('otro-step-code').style.display = 'block';
+  document.getElementById('otro-sent-msg').innerHTML =
+    `Solicitud enviada a <strong>${otroNotify}</strong> vía ${otroVia === 'email' ? '📧 ' + dest : '💬 ' + dest}.<br>
+     Cuando te den el código, ingresalo abajo.<br>
+     <span style="font-size:11px;color:var(--label3);">⏰ El código expira a las ${expStr}.</span><br><br>
+     <span style="font-size:10px;color:var(--label4);">[PROTOTIPO] Código: <strong style="letter-spacing:3px;">${otroPendingCode}</strong></span>`;
+}
+
+function verifyOtroCode() {
+  const entered = document.getElementById('otro-code-input').value.trim().toUpperCase();
+  if (!entered || entered.length < 4) {
+    document.getElementById('otro-code-error').innerHTML =
+      '<div class="notice red"><span class="notice-icon">!</span>Ingresá el código de 4 caracteres.</div>';
+    return;
+  }
+
+  const expiredMode = document.getElementById('otro-step-code').dataset.expiredMode === 'true';
+
+  // Valid code = pending new code OR existing active code (expired or not)
+  const validCode   = otroPendingCode || (otroActiveCode && otroActiveCode.code);
+  const validName   = otroPendingName || (otroActiveCode && otroActiveCode.name);
+  const validExpiry = otroPendingExpiry || (otroActiveCode && new Date(otroActiveCode.expiresAt));
+
+  if (entered !== validCode) {
+    document.getElementById('otro-code-error').innerHTML =
+      '<div class="notice red"><span class="notice-icon">!</span>Código incorrecto. Pedí al técnico que te lo confirme.</div>';
+    return;
+  }
+
+  // ✅ Authorized
+  otroActiveCode = {
+    code: validCode,
+    name: validName,
+    expiresAt: validExpiry instanceof Date ? validExpiry.toISOString() : validExpiry,
+    returnOnly: expiredMode  // flag: can only return, not withdraw
+  };
+  otroPendingCode   = null;
+  otroPendingName   = null;
+  otroPendingExpiry = null;
+  document.getElementById('otro-step-code').dataset.expiredMode = 'false';
+
+  S.user         = validName + ' (ext.)';
+  S.returnOnly   = expiredMode;
+  document.getElementById('otro-code-error').innerHTML = '';
+  goToSector();
+}
+
+function resetOtroStep() {
+  // Only reset the pending request, not the active code
+  otroNotify = null; otroVia = null; otroPendingCode = null; otroPendingName = null; otroPendingExpiry = null;
+  document.getElementById('otro-step-request').style.display = 'block';
+  document.getElementById('otro-step-code').style.display    = 'none';
+  document.getElementById('otro-name').value = '';
+  document.getElementById('otro-code-input').value = '';
+  document.querySelectorAll('#otro-notify-grid .user-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('otro-via-email').classList.remove('selected');
+  document.getElementById('otro-via-sms').classList.remove('selected');
+  document.getElementById('otro-request-error').innerHTML = '';
+}
+
+function showOtroError(msg) {
+  document.getElementById('otro-request-error').innerHTML =
+    `<div class="notice red"><span class="notice-icon">!</span>${msg}</div>`;
+}
+
+function updatePinDots(error) {
+  const dots = document.querySelectorAll('#pin-dots .pin-dot');
+  dots.forEach((d, i) => {
+    d.classList.toggle('filled', i < pinBuffer.length && !error);
+    d.classList.toggle('error', !!error);
+  });
+}
+
+function pinPress(d) {
+  if (!S.user) {
+    document.getElementById('login-error').innerHTML =
+      '<div class="notice red"><span class="notice-icon">!</span>Seleccioná tu nombre primero.</div>';
+    return;
+  }
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += d;
+  updatePinDots();
+
+  // Auto-confirm when PIN is complete (for known users)
+  if (pinBuffer.length === 4 && S.user !== 'Otro') {
+    setTimeout(pinConfirm, 120);
+  }
+}
+
+function pinClear() {
+  pinBuffer = pinBuffer.slice(0, -1);
+  updatePinDots();
+}
+
+function pinConfirm() {
+  if (!S.user) {
+    document.getElementById('login-error').innerHTML =
+      '<div class="notice red"><span class="notice-icon">!</span>Seleccioná tu nombre primero.</div>';
+    return;
+  }
+  if (S.user === 'Otro') {
+    const n = document.getElementById('otro-name').value.trim();
+    if (!n) {
+      document.getElementById('login-error').innerHTML =
+        '<div class="notice red"><span class="notice-icon">!</span>Ingresá tu nombre.</div>';
+      return;
+    }
+    S.user = n + ' (ext.)';
+    goToSector(); return;
+  }
+  if (pinBuffer !== getPIN(S.user)) {
+    updatePinDots(true);
+    document.getElementById('login-error').innerHTML =
+      '<div class="notice red"><span class="notice-icon">!</span>PIN incorrecto.</div>';
+    setTimeout(() => {
+      pinBuffer = '';
+      updatePinDots();
+      document.getElementById('login-error').innerHTML = '';
+    }, 900);
+    return;
+  }
+  goToSector();
+}
+
+function goToSector() {
+  document.getElementById('welcome-msg').textContent = `Bienvenido, ${S.user}`;
+  stepDots('steps-sector', 5, 0);
+  goTo('s-sector');
+}
+
+// ═══ SECTOR ═══
+function selectSector(s, btn) {
+  S.sector = s;
+  document.querySelectorAll('.sector-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  setTimeout(() => { renderTools(); goTo('s-tools'); }, 180);
+}
+
+// ═══ TOOLS ═══
+function renderTools() {
+  stepDots('steps-tools', 5, 1);
+  document.getElementById('sector-label').textContent = 'Sector: ' + S.sector;
+  const sectorTools = TOOLS.filter(t => t.sector === S.sector);
+  document.getElementById('tool-list').innerHTML = sectorTools.map(t => {
+    const st = toolState[t.code];
+    const out = st.status === 'OUT';
+    // Always selectable — OUT tools need to be selected to be RETURNED
+    return `<div class="list-item" onclick="selectTool('${t.code}')">
+      <div class="list-item-icon" style="background:${out ? 'rgba(255,59,48,0.1)' : 'rgba(232,97,26,0.1)'};color:${out ? 'var(--red)' : 'var(--orange)'};">${t.icon}</div>
+      <div class="list-item-content">
+        <div class="list-item-title">${t.name}</div>
+        <div class="list-item-sub">${t.code}${out ? ' · Con: ' + st.user : ''}</div>
+      </div>
+      <div class="list-item-right">
+        <span class="list-item-badge ${out ? 'badge-out' : 'badge-in'}">${out ? 'Fuera' : 'En pañol'}</span>
+        <span class="chevron">›</span>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('tool-error').innerHTML = '';
+  document.getElementById('manual-code').value = '';
+}
+
+function showOutWarning(code) {
+  const t = TOOLS.find(x => x.code === code);
+  const st = toolState[code];
+  document.getElementById('tool-error').innerHTML =
+    `<div class="notice yellow"><span class="notice-icon">⚠</span><strong>${t.name}</strong> está fuera. Con: ${st.user}${st.dueDate ? '. Vence: ' + st.dueDate : ''}. Si no la encontrás, usá "Herramienta faltante".</div>`;
+}
+
+function selectTool(code) {
+  S.tool = code;
+  renderMoveType();
+  goTo('s-movetype');
+}
+
+function manualSearch() {
+  const code = document.getElementById('manual-code').value.trim().toUpperCase();
+  const tool = TOOLS.find(t => t.code === code);
+  if (!tool) {
+    document.getElementById('tool-error').innerHTML =
+      `<div class="notice red"><span class="notice-icon">!</span>Código "${code}" no encontrado.</div>`;
+    return;
+  }
+  selectTool(code);
+}
+
+// ═══ MOVE TYPE ═══
+function renderMoveType() {
+  stepDots('steps-move', 5, 2);
+  const tool = TOOLS.find(t => t.code === S.tool);
+  const st   = toolState[S.tool];
+  document.getElementById('move-tool-name').textContent = tool.name;
+  document.getElementById('move-tool-code').textContent = tool.code + ' · ' + tool.sector;
+
+  const isOut = st.status === 'OUT';
+  document.getElementById('move-info').innerHTML = `
+    <div class="info-row">
+      <span class="info-key">Estado actual</span>
+      <span class="info-val ${isOut ? 'red' : 'green'}">${isOut ? 'Fuera del pañol' : 'En el pañol'}</span>
+    </div>
+    ${isOut ? `<div class="info-row"><span class="info-key">Con</span><span class="info-val">${st.user}</span></div>` : ''}
+    ${isOut && st.since ? `<div class="info-row"><span class="info-key">Desde</span><span class="info-val">${st.since}</span></div>` : ''}
+    ${isOut && st.dueDate ? `<div class="info-row"><span class="info-key">Vence</span><span class="info-val ${new Date(st.dueDate)<new Date()?'red':''}">${st.dueDate}</span></div>` : ''}
+  `;
+
+  const btnS = document.getElementById('btn-salida');
+  const btnE = document.getElementById('btn-entrada');
+  // If OUT → can't take out again (disable SALIDA), but CAN return (enable ENTRADA)
+  // If IN  → can take out (enable SALIDA), but can't return (disable ENTRADA)
+  btnS.disabled = isOut;   // disable SALIDA if already out
+  btnE.disabled = !isOut;  // disable ENTRADA if already in pañol
+  btnS.style.opacity = isOut  ? '0.3' : '1';
+  btnE.style.opacity = !isOut ? '0.3' : '1';
+  document.getElementById('move-error').innerHTML = '';
+}
+
+function selectMove(type) {
+  const st = toolState[S.tool];
+  if (type === 'SALIDA' && st.status === 'OUT') {
+    document.getElementById('move-error').innerHTML =
+      '<div class="notice red"><span class="notice-icon">!</span>Esta herramienta ya está fuera del pañol.</div>';
+    return;
+  }
+  if (type === 'ENTRADA' && st.status === 'IN') {
+    document.getElementById('move-error').innerHTML =
+      '<div class="notice red"><span class="notice-icon">!</span>Esta herramienta ya está en el pañol.</div>';
+    return;
+  }
+  // Block withdrawal if external user with expired code
+  if (type === 'SALIDA' && S.returnOnly) {
+    document.getElementById('move-error').innerHTML =
+      '<div class="notice yellow"><span class="notice-icon">⏰</span>Tu código expiró. Solo podés devolver herramientas. Para retirar, solicitá un código nuevo.</div>';
+    return;
+  }
+  S.moveType = type;
+  if (type === 'SALIDA') {
+    // Check calibration status
+    const tool = TOOLS.find(t => t.code === S.tool);
+    const cs = calStatus(tool);
+    if (cs === 'expired' || cs === 'warn15') {
+      S.calWarning = cs;
+    } else {
+      S.calWarning = null;
+    }
+    resetTiempo();
+    stepDots('steps-tiempo', 5, 3);
+    goTo('s-tiempo');
+  } else {
+    // ENTRADA → estado
+    S.estado = null; S.informeText = null;
+    document.getElementById('informe-box').style.display = 'none';
+    document.getElementById('btn-confirmar-estado').style.display = 'none';
+    document.getElementById('informe-text').value = '';
+    document.querySelectorAll('#btn-ok,#btn-informe').forEach(b => b.classList.remove('selected'));
+    const tool = TOOLS.find(t => t.code === S.tool);
+    document.getElementById('estado-tool-name').textContent = tool.name;
+    stepDots('steps-estado', 5, 3);
+    goTo('s-estado');
+  }
+}
+
+// ═══ TIEMPO ═══
+function resetTiempo() {
+  tiempoMode = 'days'; selectedDaysVal = null;
+  document.querySelectorAll('.days-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('date-input').value = '';
+
+  // Show calibration warning if needed
+  const tool = TOOLS.find(t => t.code === S.tool);
+  const calWarn = document.getElementById('tiempo-cal-warn');
+  if (calWarn) {
+    const cs = calStatus(tool);
+    if (cs === 'expired') {
+      calWarn.innerHTML = `<div class="notice red"><span class="notice-icon">🔴</span><strong>¡Calibración VENCIDA!</strong> Podés retirarla igualmente, pero quedará registrado y se enviará alerta al equipo.</div>`;
+    } else if (cs === 'warn15') {
+      calWarn.innerHTML = `<div class="notice yellow"><span class="notice-icon">🟠</span><strong>Calibración próxima a vencer (${calDaysLeft(tool)} días).</strong> Quedará registrado el retiro.</div>`;
+    } else {
+      calWarn.innerHTML = '';
+    }
+  }
+
+  document.getElementById('tiempo-preview').innerHTML = '';
+  switchTiempoMode('days');
+}
+
+function switchTiempoMode(mode) {
+  tiempoMode = mode;
+  document.getElementById('toggle-days').classList.toggle('active', mode === 'days');
+  document.getElementById('toggle-date').classList.toggle('active', mode === 'date');
+  document.getElementById('panel-days').style.display = mode === 'days' ? 'block' : 'none';
+  document.getElementById('panel-date').style.display = mode === 'date' ? 'block' : 'none';
+  // Clear the other
+  if (mode === 'days') { document.getElementById('date-input').value = ''; }
+  else { document.querySelectorAll('.days-btn').forEach(b => b.classList.remove('selected')); selectedDaysVal = null; }
+  document.getElementById('tiempo-preview').innerHTML = '';
+}
+
+function selectDays(d, btn) {
+  selectedDaysVal = d;
+  document.querySelectorAll('.days-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const lbl = d === 0 ? 'Sin fecha de vencimiento' : `Vence el ${calcDueDate(d)}`;
+  document.getElementById('tiempo-preview').innerHTML =
+    `<div class="notice green"><span class="notice-icon">✓</span>${lbl}</div>`;
+}
+
+function onDateInput() {
+  const val = document.getElementById('date-input').value;
+  if (val) {
+    document.getElementById('tiempo-preview').innerHTML =
+      `<div class="notice green"><span class="notice-icon">✓</span>Fecha de devolución: ${val}</div>`;
+  } else {
+    document.getElementById('tiempo-preview').innerHTML = '';
+  }
+}
+
+function calcDueDate(days) {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  return d.toLocaleDateString('es-AR');
+}
+
+function confirmTiempo() {
+  if (tiempoMode === 'date') {
+    const val = document.getElementById('date-input').value;
+    if (!val) {
+      document.getElementById('tiempo-preview').innerHTML =
+        '<div class="notice red"><span class="notice-icon">!</span>Seleccioná una fecha.</div>';
+      return;
+    }
+    S.dueDate = val;
+  } else {
+    if (selectedDaysVal === null) {
+      document.getElementById('tiempo-preview').innerHTML =
+        '<div class="notice red"><span class="notice-icon">!</span>Seleccioná un plazo.</div>';
+      return;
+    }
+    if (selectedDaysVal === 0) { S.dueDate = null; }
+    else { const d = new Date(); d.setDate(d.getDate() + selectedDaysVal); S.dueDate = d.toISOString().split('T')[0]; }
+  }
+  registrar();
+}
+
+// ═══ ESTADO ═══
+function selectEstado(e, btn) {
+  S.estado = e;
+  document.querySelectorAll('#btn-ok,#btn-informe').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('informe-box').style.display = e === 'INFORME' ? 'block' : 'none';
+  document.getElementById('btn-confirmar-estado').style.display = 'block';
+}
+
+function confirmarEstado() {
+  if (!S.estado) return;
+  if (S.estado === 'INFORME') {
+    const txt = document.getElementById('informe-text').value.trim();
+    if (!txt) {
+      document.getElementById('informe-box').innerHTML +=
+        '<div class="notice red"><span class="notice-icon">!</span>Describí el problema.</div>';
+      return;
+    }
+    S.informeText = txt;
+  }
+  registrar();
+}
+
+// ═══ REGISTRAR ═══
+function registrar() {
+  const tool = TOOLS.find(t => t.code === S.tool);
+  const now  = new Date();
+  const time = now.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+  const date = now.toLocaleDateString('es-AR');
+
+  if (S.moveType === 'SALIDA') {
+    toolState[S.tool] = { status:'OUT', user:S.user, since:date+' '+time, dueDate:S.dueDate };
+    const cs = calStatus(tool);
+    const calNote = cs === 'expired' ? '⚠ RETIRADA CON CALIBRACIÓN VENCIDA' : cs === 'warn15' ? '⚠ Retirada con calibración próxima a vencer' : null;
+    log.push({ type:'SALIDA', user:S.user, toolName:tool.name, toolCode:tool.code, time, date, dueDate:S.dueDate, notes:calNote });
+
+    document.getElementById('confirm-circle').innerHTML = '↑';
+    document.getElementById('confirm-circle').style.cssText = 'background:rgba(232,97,26,0.12);color:var(--orange);';
+    document.getElementById('confirm-title').textContent = 'Herramienta retirada';
+    document.getElementById('confirm-detail').innerHTML =
+      `<strong>${tool.name}</strong><br>${S.user} · ${date} ${time}` +
+      (S.dueDate ? `<br>Vence: ${S.dueDate}` : '<br>Sin fecha de vencimiento');
+    document.getElementById('confirm-notice').innerHTML = calNote
+      ? `<div class="notice red"><span class="notice-icon">🔴</span>${calNote} — <strong>Alerta enviada al equipo.</strong></div>`
+      : '';
+
+  } else {
+    log.push({ type:'ENTRADA', user:S.user, toolName:tool.name, toolCode:tool.code, time, date, estado:S.estado, notes:S.informeText||null });
+    if (S.informeText) {
+      log.push({ type:'INFORME', user:S.user, toolName:tool.name, toolCode:tool.code, time, date, notes:S.informeText });
+    }
+    // RESET tool state to IN
+    toolState[S.tool] = { status:'IN', user:null, since:null, dueDate:null };
+
+    const isInforme = S.estado === 'INFORME';
+    document.getElementById('confirm-circle').innerHTML = isInforme ? '⚠' : '✓';
+    document.getElementById('confirm-circle').style.cssText = isInforme
+      ? 'background:rgba(255,159,10,0.12);color:var(--yellow);'
+      : 'background:rgba(48,209,88,0.12);color:var(--green);';
+    document.getElementById('confirm-title').textContent = isInforme ? 'Devolución con informe' : 'Herramienta devuelta';
+    document.getElementById('confirm-detail').innerHTML = `<strong>${tool.name}</strong><br>${S.user} · ${date} ${time}`;
+    document.getElementById('confirm-notice').innerHTML = isInforme
+      ? `<div class="notice yellow"><span class="notice-icon">⚠</span><strong>Alerta enviada al equipo:</strong><br>${S.informeText}</div>`
+      : `<div class="notice green"><span class="notice-icon">✓</span>Depositada sin novedades.</div>`;
+  }
+
+  // Write to Supabase (async, non-blocking)
+  const movData = {
+    tipo: S.moveType || S.estado || 'SISTEMA',
+    user_nombre: S.user,
+    herramienta_code: S.tool,
+    herramienta_name: tool ? tool.name : '',
+    sector: S.sector,
+    due_date: S.dueDate || null,
+    estado_devolucion: S.estado || null,
+    notas: S.informeText || (S.moveType==='SALIDA' && calStatus(tool)!=='ok' ? '⚠ Retirada con calibración no al día' : null),
+    cal_warning: S.moveType==='SALIDA' && ['expired','warn15'].includes(calStatus(tool))
+  };
+  db.logMovimiento(movData).catch(e => console.warn('Log error:', e));
+  goTo('s-confirm');
+}
+
+// ═══ FALTANTE ═══
+function selectMissingUser(name, btn) {
+  missingUser = name;
+  document.querySelectorAll('#missing-user-grid .user-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('missing-otro-box').style.display = name === 'Otro' ? 'block' : 'none';
+}
+
+function sendMissingAlert() {
+  if (!missingUser) {
+    document.getElementById('missing-error').innerHTML =
+      '<div class="notice red"><span class="notice-icon">!</span>Indicá quién reporta.</div>';
+    return;
+  }
+  let reporter = missingUser;
+  if (missingUser === 'Otro') {
+    reporter = document.getElementById('missing-otro-name').value.trim();
+    if (!reporter) {
+      document.getElementById('missing-error').innerHTML =
+        '<div class="notice red"><span class="notice-icon">!</span>Ingresá tu nombre.</div>';
+      return;
+    }
+  }
+  const toolName = document.getElementById('missing-tool').value.trim();
+  if (!toolName) {
+    document.getElementById('missing-error').innerHTML =
+      '<div class="notice red"><span class="notice-icon">!</span>Indicá qué herramienta buscás.</div>';
+    return;
+  }
+  const detail = document.getElementById('missing-detail').value.trim();
+  const now  = new Date();
+  const time = now.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+  const date = now.toLocaleDateString('es-AR');
+
+  log.push({ type:'ALERTA', user:reporter, toolName:toolName, subject:toolName, time, date, notes:detail || null });
+
+  document.getElementById('confirm-circle').innerHTML = '🔔';
+  document.getElementById('confirm-circle').style.cssText = 'background:rgba(255,159,10,0.12);color:var(--yellow);';
+  document.getElementById('confirm-title').textContent = 'Alerta enviada';
+  document.getElementById('confirm-detail').innerHTML =
+    `<strong>${reporter}</strong> reporta que necesita:<br><strong>${toolName}</strong><br>${date} ${time}`;
+  document.getElementById('confirm-notice').innerHTML =
+    `<div class="notice yellow"><span class="notice-icon">⚠</span>Alerta enviada a todo el equipo. La herramienta figura en el sistema pero no fue encontrada físicamente.${detail ? '<br><br>' + detail : ''}</div>`;
+
+  goTo('s-confirm');
+}
+
+// ═══ HISTORY ═══
+function renderHistory() {
+  const hl = document.getElementById('history-list');
+  hl.innerHTML = log.length === 0
+    ? '<div class="list-item" style="cursor:default;color:var(--label4);font-size:14px;justify-content:center;">Sin registros aún</div>'
+    : [...log].reverse().map(logItemHtml).join('');
+}
+
+// ═══ CATALOG MODAL ═══
+function openMissingCatalog() {
+  document.getElementById('catalog-search').value = '';
+  renderCatalog(TOOLS);
+  document.getElementById('catalog-modal').style.display = 'block';
+  setTimeout(() => document.getElementById('catalog-search').focus(), 300);
+}
+
+function closeCatalog() {
+  document.getElementById('catalog-modal').style.display = 'none';
+}
+
+function closeCatalogIfOutside(e) {
+  if (e.target === document.getElementById('catalog-modal')) closeCatalog();
+}
+
+function filterCatalog() {
+  const q = document.getElementById('catalog-search').value.toLowerCase();
+  const filtered = TOOLS.filter(t =>
+    t.name.toLowerCase().includes(q) ||
+    t.code.toLowerCase().includes(q) ||
+    t.sector.toLowerCase().includes(q)
+  );
+  renderCatalog(filtered);
+}
+
+function renderCatalog(tools) {
+  const sectorIcons = { 'Ultrasonido':'🔊','Corrientes':'⚡','Líquidos':'💧','Partículas M.':'🧲','Boroscopía':'🔭','Otro':'📦' };
+  const sectors = [...new Set(TOOLS.map(t => t.sector))].filter(s => tools.some(t => t.sector === s));
+  document.getElementById('catalog-list').innerHTML = sectors.length === 0
+    ? '<div style="text-align:center;padding:24px;color:var(--label4);font-size:14px;">Sin resultados</div>'
+    : sectors.map(sec => {
+        const secTools = tools.filter(t => t.sector === sec);
+        return `<div style="margin-bottom:8px;">
+          <div style="font-size:11px;font-weight:700;color:var(--label3);text-transform:uppercase;letter-spacing:0.8px;padding:8px 6px 4px;">${sectorIcons[sec]||'📦'} ${sec}</div>
+          <div class="list-group" style="margin-bottom:0;">
+            ${secTools.map(t => {
+              const st = toolState[t.code];
+              const out = st.status === 'OUT';
+              return `<div class="list-item" onclick="selectMissingTool('${t.code}','${t.name.replace(/'/g,"\\'")}')">
+                <div class="list-item-icon" style="background:${out?'rgba(255,59,48,0.1)':'rgba(232,97,26,0.1)'};color:${out?'var(--red)':'var(--orange)'};">${t.icon}</div>
+                <div class="list-item-content">
+                  <div class="list-item-title">${t.name}</div>
+                  <div class="list-item-sub">${t.code}</div>
+                </div>
+                <span class="list-item-badge ${out?'badge-out':'badge-in'}">${out?'Fuera':'En pañol'}</span>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>`;
+      }).join('');
+}
+
+function selectMissingTool(code, name) {
+  document.getElementById('missing-tool').value = name + ' (' + code + ')';
+  document.getElementById('missing-tool-label').textContent = name + ' · ' + code;
+  document.getElementById('missing-tool-label').style.color = 'var(--label)';
+  document.getElementById('missing-tool-label').style.fontWeight = '600';
+  closeCatalog();
+}
+
+// ═══ CALIBRATION ═══
+function calStatus(tool) {
+  if (!tool.calExp) return 'none';
+  const now = new Date(); now.setHours(0,0,0,0);
+  const diff = Math.ceil((new Date(tool.calExp) - now) / 86400000);
+  if (diff < 0)   return 'expired';
+  if (diff <= 15) return 'warn15';
+  if (diff <= 30) return 'warn30';
+  return 'ok';
+}
+
+function calDaysLeft(tool) {
+  if (!tool.calExp) return null;
+  const now = new Date(); now.setHours(0,0,0,0);
+  return Math.ceil((new Date(tool.calExp) - now) / 86400000);
+}
+
+function calBadge(tool) {
+  const s = calStatus(tool);
+  const d = calDaysLeft(tool);
+  if (s === 'none')    return { color:'var(--label4)', bg:'var(--fill2)',              label:'Sin requerimiento', dot:'⬜' };
+  if (s === 'expired') return { color:'var(--red)',    bg:'rgba(255,59,48,0.12)',       label:`Vencida hace ${Math.abs(d)} día(s)`, dot:'🔴' };
+  if (s === 'warn15')  return { color:'var(--yellow)', bg:'rgba(255,159,10,0.14)',      label:`Vence en ${d} día(s)`, dot:'🟠' };
+  if (s === 'warn30')  return { color:'var(--yellow)', bg:'rgba(255,159,10,0.08)',      label:`Vence en ${d} día(s)`, dot:'🟡' };
+  return                      { color:'var(--green)',  bg:'rgba(48,209,88,0.1)',        label:`Vence: ${tool.calExp}`, dot:'🟢' };
+}
+
+function filterCal(f) {
+  ['all','exp','soon','ok'].forEach(x => {
+    const b = document.getElementById('cal-filter-' + x);
+    if (b) { b.style.fontWeight = x===f?'800':'600'; b.style.outline = x===f?'2px solid currentColor':'none'; }
+  });
+  renderCalibration(f);
+}
+
+function renderCalibration(filter) {
+  const priority = { expired:0, warn15:1, warn30:2, ok:3, none:4 };
+  let tools = [...TOOLS].sort((a,b) => priority[calStatus(a)] - priority[calStatus(b)]);
+  if (filter === 'exp')  tools = tools.filter(t => calStatus(t) === 'expired');
+  if (filter === 'soon') tools = tools.filter(t => ['warn15','warn30'].includes(calStatus(t)));
+  if (filter === 'ok')   tools = tools.filter(t => calStatus(t) === 'ok');
+
+  const container = document.getElementById('cal-list');
+  if (tools.length === 0) {
+    container.innerHTML = '<div class="list-group"><div class="list-item" style="cursor:default;justify-content:center;color:var(--label4);font-size:14px;">Sin herramientas en esta categoría</div></div>';
+    return;
+  }
+  container.innerHTML = '<div class="list-group">' +
+    tools.map(t => {
+      const b  = calBadge(t);
+      const st = toolState[t.code];
+      return `<div class="list-item" onclick="openCalModal('${t.code}')" style="cursor:pointer;">
+        <div class="list-item-icon" style="background:${b.bg};font-size:20px;">${b.dot}</div>
+        <div class="list-item-content">
+          <div class="list-item-title">${t.name}</div>
+          <div class="list-item-sub">${t.code} · ${t.sector}</div>
+          <div style="font-size:11px;font-weight:600;color:${b.color};margin-top:2px;">${b.label}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;">
+          <span class="list-item-badge ${st.status==='OUT'?'badge-out':'badge-in'}">${st.status==='OUT'?'Fuera':'En pañol'}</span>
+          <span style="font-size:10px;color:var(--orange);font-weight:600;">Actualizar ›</span>
+        </div>
+      </div>`;
+    }).join('') + '</div>';
+}
+
+// ═══ CAL UPDATE MODAL ═══
+let calModalCode = null;
+let calAuthUser  = null;
+let calPinBuf    = '';
+
+function openCalModal(code) {
+  calModalCode = code;
+  calAuthUser  = null;
+  calPinBuf    = '';
+  const tool = TOOLS.find(t => t.code === code);
+  const b = calBadge(tool);
+
+  document.getElementById('cal-modal-tool-info').innerHTML =
+    `<div style="font-size:15px;font-weight:700;margin-bottom:4px;">${tool.name}</div>
+     <div style="font-size:12px;color:var(--label3);">${tool.code} · ${tool.sector}</div>
+     <div style="font-size:12px;font-weight:600;color:${b.color};margin-top:4px;">${b.dot} ${b.label}</div>`;
+
+  // Pre-fill date with today + 1 year as suggestion
+  const suggest = new Date(); suggest.setFullYear(suggest.getFullYear() + 1);
+  document.getElementById('cal-new-date').value = suggest.toISOString().split('T')[0];
+
+  // Reset auth
+  document.querySelectorAll('#cal-auth-user-grid .user-btn').forEach(b => b.classList.remove('selected'));
+  updateCalPinDots();
+  document.getElementById('cal-auth-error').innerHTML = '';
+
+  document.getElementById('cal-modal').style.display = 'block';
+}
+
+function closeCalModal() {
+  document.getElementById('cal-modal').style.display = 'none';
+  calModalCode = null; calAuthUser = null; calPinBuf = '';
+}
+
+function closeCalModalIfOutside(e) {
+  if (e.target === document.getElementById('cal-modal')) closeCalModal();
+}
+
+function selectCalAuth(name, btn) {
+  calAuthUser = name;
+  calPinBuf   = '';
+  document.querySelectorAll('#cal-auth-user-grid .user-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  updateCalPinDots();
+  document.getElementById('cal-auth-error').innerHTML = '';
+}
+
+function updateCalPinDots(error) {
+  const dots = document.querySelectorAll('#cal-pin-dots .pin-dot');
+  dots.forEach((d, i) => {
+    d.classList.toggle('filled', i < calPinBuf.length && !error);
+    d.classList.toggle('error', !!error);
+  });
+}
+
+function calPinPress(d) {
+  if (!calAuthUser) {
+    document.getElementById('cal-auth-error').innerHTML =
+      '<div class="notice red"><span class="notice-icon">!</span>Seleccioná quién autoriza primero.</div>';
+    return;
+  }
+  if (calPinBuf.length >= 4) return;
+  calPinBuf += d;
+  updateCalPinDots();
+  if (calPinBuf.length === 4) setTimeout(calPinConfirm, 120);
+}
+
+function calPinClear() {
+  calPinBuf = calPinBuf.slice(0, -1);
+  updateCalPinDots();
+}
+
+function calPinConfirm() {
+  if (!calAuthUser) {
+    document.getElementById('cal-auth-error').innerHTML =
+      '<div class="notice red"><span class="notice-icon">!</span>Seleccioná quién autoriza primero.</div>';
+    return;
+  }
+  const newDate = document.getElementById('cal-new-date').value;
+  if (!newDate) {
+    document.getElementById('cal-auth-error').innerHTML =
+      '<div class="notice red"><span class="notice-icon">!</span>Ingresá la nueva fecha de vencimiento.</div>';
+    return;
+  }
+  if (calPinBuf !== getPIN(calAuthUser)) {
+    updateCalPinDots(true);
+    document.getElementById('cal-auth-error').innerHTML =
+      '<div class="notice red"><span class="notice-icon">!</span>PIN incorrecto.</div>';
+    setTimeout(() => { calPinBuf = ''; updateCalPinDots(); document.getElementById('cal-auth-error').innerHTML = ''; }, 900);
+    return;
+  }
+
+  // ✅ Authorized — update calibration
+  const tool     = TOOLS.find(t => t.code === calModalCode);
+  const oldDate  = tool.calExp || 'Sin fecha';
+  tool.calExp    = newDate;
+
+  const now  = new Date();
+  const time = now.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+  const date = now.toLocaleDateString('es-AR');
+  log.push({
+    type:'CALIBRACION', user:calAuthUser, toolName:tool.name, toolCode:tool.code,
+    time, date, notes:`Calibración actualizada: ${oldDate} → ${newDate}`
+  });
+
+  closeCalModal();
+  renderCalibration('all');
+  updateCalWarnings();
+
+  // Show success confirm screen
+  document.getElementById('confirm-circle').innerHTML = '📅';
+  document.getElementById('confirm-circle').style.cssText = 'background:rgba(48,209,88,0.12);color:var(--green);';
+  document.getElementById('confirm-title').textContent = 'Calibración actualizada';
+  document.getElementById('confirm-detail').innerHTML =
+    `<strong>${tool.name}</strong><br>Autorizado por: ${calAuthUser}<br>${date} ${time}`;
+  document.getElementById('confirm-notice').innerHTML =
+    `<div class="notice green"><span class="notice-icon">✓</span>Nueva fecha de vencimiento: <strong>${newDate}</strong></div>`;
+  goTo('s-confirm');
+}
+
+// Add CALIBRACION to logItemHtml colors
+const _logColors = { SALIDA:'#ff6b5b', ENTRADA:'#30D158', INFORME:'#FF9F0A', ALERTA:'#FF9F0A', CALIBRACION:'#30D158', SOLICITUD:'#007AFF' };
+const _logIcons  = { SALIDA:'↑', ENTRADA:'↓', INFORME:'⚠', ALERTA:'🔔', CALIBRACION:'📅', SOLICITUD:'🔑' };
+const _logLabels = { SALIDA:'Sale', ENTRADA:'Entra', INFORME:'Informe', ALERTA:'Alerta', CALIBRACION:'Calibración', SOLICITUD:'Solicitud' };
+const _logCls    = { SALIDA:'badge-out', ENTRADA:'badge-in', INFORME:'badge-warn', ALERTA:'badge-warn', CALIBRACION:'badge-in', SOLICITUD:'badge-in' };
+
+updateDashboard();
+
+// Show calibration warnings in dashboard
+function updateCalWarnings() {
+  const expd = TOOLS.filter(t => calStatus(t) === 'expired');
+  const soon = TOOLS.filter(t => ['warn15','warn30'].includes(calStatus(t)));
+  let html = '';
+  if (expd.length) html += `<div class="notice red" style="margin-bottom:8px;cursor:pointer;" onclick="goTo('s-calibration')"><span class="notice-icon">🔴</span><strong>${expd.length} herramienta(s) con calibración vencida.</strong> Tocar para ver →</div>`;
+  if (soon.length) html += `<div class="notice yellow" style="margin-bottom:8px;cursor:pointer;" onclick="goTo('s-calibration')"><span class="notice-icon">🟡</span><strong>${soon.length} herramienta(s) próximas a vencer.</strong> Tocar para ver →</div>`;
+  document.getElementById('cal-warnings').innerHTML = html;
+}
+updateCalWarnings();
+</script>
+</body>
+</html>
